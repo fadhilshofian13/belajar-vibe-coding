@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db";
-import { users } from "../db/schema";
+import { sessions, users } from "../db/schema";
 
 export class UserAlreadyExistsError extends Error {
   constructor() {
@@ -8,6 +8,20 @@ export class UserAlreadyExistsError extends Error {
     this.name = "UserAlreadyExistsError";
   }
 }
+
+export class UnauthorizedError extends Error {
+  constructor() {
+    super("Unauthorized");
+    this.name = "UnauthorizedError";
+  }
+}
+
+export type UserProfile = {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+};
 
 export type RegisterUserInput = {
   name: string;
@@ -42,6 +56,33 @@ export async function registerUser(input: RegisterUserInput): Promise<void> {
     }
     throw error;
   }
+}
+
+export async function getProfileByToken(token: string): Promise<UserProfile> {
+  const session = await db.query.sessions.findFirst({
+    columns: { userId: true },
+    where: eq(sessions.token, token),
+  });
+
+  if (!session) {
+    throw new UnauthorizedError();
+  }
+
+  const user = await db.query.users.findFirst({
+    columns: { id: true, name: true, email: true, createdAt: true },
+    where: eq(users.id, session.userId),
+  });
+
+  if (!user) {
+    throw new UnauthorizedError();
+  }
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    createdAt: user.createdAt.toISOString(),
+  };
 }
 
 function isUniqueViolation(error: unknown): boolean {

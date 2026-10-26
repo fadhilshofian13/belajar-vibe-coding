@@ -5,6 +5,7 @@ import {
   logout,
   UnauthorizedError,
 } from "../services/auth-services";
+import { extractBearerToken } from "../utils/bearer-token";
 
 export const authRoutes = new Elysia({ prefix: "/api/v1" })
   .post(
@@ -51,9 +52,3 @@ export const authRoutes = new Elysia({ prefix: "/api/v1" })
       throw error;
     }
   });
-
-function extractBearerToken(header: string | undefined): string | null {
-  const match = header?.match(/^Bearer\s+(\S+)$/i);
-
-  return match?.[1] ?? null;
-}

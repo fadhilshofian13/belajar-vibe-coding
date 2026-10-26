@@ -43,6 +43,16 @@ Production:
 bun run start
 ```
 
+## Testing
+
+Tes integrasi memakai database dari `.env`, jadi pastikan PostgreSQL berjalan dan migration sudah dijalankan.
+
+```bash
+bun run test
+```
+
+CI di GitHub Actions menjalankan `bun run typecheck`, migration, dan `bun run test` di setiap Pull Request.
+
 ## Endpoint
 
 ### `GET /health`

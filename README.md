@@ -43,6 +43,16 @@ Production:
 bun run start
 ```
 
+## Testing
+
+Tes integrasi memakai database dari `.env`, jadi pastikan PostgreSQL berjalan dan migration sudah dijalankan.
+
+```bash
+bun run test
+```
+
+CI di GitHub Actions menjalankan `bun run typecheck`, migration, dan `bun run test` di setiap Pull Request.
+
 ## Endpoint
 
 ### `GET /health`
@@ -189,6 +199,39 @@ Contoh:
 curl -X POST http://localhost:3000/api/v1/login \
   -H "Content-Type: application/json" \
   -d '{"email":"john.doe@example.com","password":"password"}'
+```
+
+### `DELETE /api/v1/logout`
+
+Logout user yang sedang login. Sesi dengan token yang dikirim dihapus, sehingga token itu tidak bisa dipakai lagi. Sesi lain milik user yang sama tidak terpengaruh.
+
+**Headers:**
+
+```
+Authorization: Bearer <token>
+```
+
+**Berhasil (200):**
+
+```json
+{
+  "message": "Logout successful"
+}
+```
+
+**Token tidak ada, format header salah, atau token tidak valid (401):**
+
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+Contoh:
+
+```bash
+curl -X DELETE http://localhost:3000/api/v1/logout \
+  -H "Authorization: Bearer <token>"
 ```
 
 ## Database (Drizzle)

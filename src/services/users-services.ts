@@ -1,18 +1,12 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db";
 import { sessions, users } from "../db/schema";
+import { UnauthorizedError } from "./auth-services";
 
 export class UserAlreadyExistsError extends Error {
   constructor() {
     super("User already exists");
     this.name = "UserAlreadyExistsError";
-  }
-}
-
-export class UnauthorizedError extends Error {
-  constructor() {
-    super("Unauthorized");
-    this.name = "UnauthorizedError";
   }
 }
 

@@ -9,6 +9,13 @@ export class InvalidCredentialsError extends Error {
   }
 }
 
+export class UnauthorizedError extends Error {
+  constructor() {
+    super("Unauthorized");
+    this.name = "UnauthorizedError";
+  }
+}
+
 export type LoginInput = {
   email: string;
   password: string;
@@ -41,4 +48,15 @@ export async function login(input: LoginInput): Promise<string> {
   });
 
   return token;
+}
+
+export async function logout(token: string): Promise<void> {
+  const deleted = await db
+    .delete(sessions)
+    .where(eq(sessions.token, token))
+    .returning({ id: sessions.id });
+
+  if (deleted.length === 0) {
+    throw new UnauthorizedError();
+  }
 }

@@ -1,10 +1,11 @@
 import { Elysia, t } from "elysia";
+import { UnauthorizedError } from "../services/auth-services";
 import {
   getProfileByToken,
   registerUser,
-  UnauthorizedError,
   UserAlreadyExistsError,
 } from "../services/users-services";
+import { extractBearerToken } from "../utils/bearer-token";
 
 export const usersRoutes = new Elysia({ prefix: "/api/v1/users" })
   .post(
@@ -52,9 +53,3 @@ export const usersRoutes = new Elysia({ prefix: "/api/v1/users" })
       throw error;
     }
   });
-
-function extractBearerToken(header: string | undefined): string | null {
-  const match = header?.match(/^Bearer\s+(\S+)$/i);
-
-  return match?.[1] ?? null;
-}

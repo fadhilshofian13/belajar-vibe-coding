@@ -113,6 +113,44 @@ curl -X POST http://localhost:3000/api/v1/users \
   -d '{"name":"John Doe","email":"john.doe@example.com","password":"password"}'
 ```
 
+### `GET /api/v1/users/profile`
+
+Mengambil data user yang sedang login. Token didapat dari `POST /api/v1/login`.
+
+**Headers:**
+
+```
+Authorization: Bearer <token>
+```
+
+**Berhasil (200):**
+
+```json
+{
+  "data": {
+    "id": "a0ca5b8d-3438-4036-be6d-158f85f28265",
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "createdAt": "2026-10-26T15:56:09.818Z"
+  }
+}
+```
+
+**Token tidak ada, format header salah, atau token tidak valid (401):**
+
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+Contoh:
+
+```bash
+curl http://localhost:3000/api/v1/users/profile \
+  -H "Authorization: Bearer <token>"
+```
+
 ### `POST /api/v1/login`
 
 Login user. Jika berhasil, server membuat sesi baru dan mengembalikan token (uuid).

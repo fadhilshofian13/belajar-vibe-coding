@@ -113,6 +113,46 @@ curl -X POST http://localhost:3000/api/v1/users \
   -d '{"name":"John Doe","email":"john.doe@example.com","password":"password"}'
 ```
 
+### `POST /api/v1/login`
+
+Login user. Jika berhasil, server membuat sesi baru dan mengembalikan token (uuid).
+
+**Request body:**
+
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "password"
+}
+```
+
+**Berhasil (200):**
+
+```json
+{
+  "message": "Login successful",
+  "data": "72d8fa01-7f0d-4301-a879-19969750d3bc"
+}
+```
+
+**Email atau password salah (401):**
+
+```json
+{
+  "message": "Email or password is incorrect"
+}
+```
+
+Body yang tidak valid (field kurang atau format email salah) ditolak dengan status 422.
+
+Contoh:
+
+```bash
+curl -X POST http://localhost:3000/api/v1/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"john.doe@example.com","password":"password"}'
+```
+
 ## Database (Drizzle)
 
 Generate migration dari schema:
@@ -127,4 +167,4 @@ Jalankan migration:
 bun run db:migrate
 ```
 
-Schema ada di `src/db/schema.ts` (saat ini berisi tabel `users`). File migration ada di folder `drizzle/`.
+Schema ada di `src/db/schema.ts` (saat ini berisi tabel `users` dan `sessions`). File migration ada di folder `drizzle/`.

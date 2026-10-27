@@ -17,6 +17,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@elysiajs/openapi": "^1.4.16",
     "drizzle-orm": "^0.45.4",
     "elysia": "^1.4.30",
     "postgres": "^3.4.9"

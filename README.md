@@ -23,6 +23,7 @@ Proyek ini juga menjadi tempat belajar vibe coding: fitur dikerjakan bertahap da
 | ElysiaJS (`elysia`) | Library              | Web framework: routing dan validasi request                     | `src/routes/`, `src/index.ts`                |
 | Drizzle ORM (`drizzle-orm`) | Library      | Query database dan definisi schema                              | `src/db/`, `src/services/`                   |
 | `postgres`          | Library              | Driver PostgreSQL untuk Drizzle                                 | `src/db/index.ts`                            |
+| `@elysiajs/openapi` | Library              | Membuat dokumentasi OpenAPI dan Swagger UI otomatis             | `src/index.ts`, `src/routes/`                |
 | Drizzle Kit (`drizzle-kit`) | Dev dependency | Membuat dan menjalankan migration                             | `drizzle.config.ts`, folder `drizzle/`       |
 | `typescript`, `@types/bun` | Dev dependency | Compiler dan tipe untuk Bun                                  | Typecheck dan editor                         |
 | `Bun.password`      | Bawaan Bun           | Hash dan verifikasi password dengan bcrypt                      | `src/services/users-services.ts`, `src/services/auth-services.ts` |
@@ -107,6 +108,19 @@ flowchart LR
 | `POST`   | `/api/v1/login`             | Tidak       | Login, mendapatkan token            | `src/routes/auth-routes.ts`  |
 | `GET`    | `/api/v1/users/profile`     | Ya          | Data user yang sedang login         | `src/routes/users-routes.ts` |
 | `DELETE` | `/api/v1/logout`            | Ya          | Logout, menghapus sesi              | `src/routes/auth-routes.ts`  |
+
+### Dokumentasi interaktif (Swagger)
+
+Saat server berjalan, dokumentasi lengkap semua endpoint (request, response, dan status code) bisa dibuka di browser:
+
+- Swagger UI: `http://localhost:3000/swagger`
+- Spesifikasi OpenAPI (JSON): `http://localhost:3000/swagger/json`
+
+Endpoint bisa langsung dicoba lewat tombol **Try it out**. Untuk endpoint yang butuh login (ditandai ikon gembok):
+
+1. Jalankan `POST /api/v1/login`, lalu salin token dari field `data` di response.
+2. Klik **Authorize**, tempel token tanpa kata `Bearer`, lalu klik **Authorize** lagi.
+3. Endpoint yang butuh login sekarang otomatis mengirim header `Authorization: Bearer <token>`.
 
 ### Alur autentikasi
 

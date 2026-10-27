@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { extractBearerToken } from "./bearer-token";
+import { extractBearerToken } from "../utils/bearer-token";
 
 describe("extractBearerToken", () => {
   test("returns the token from a valid Bearer header", () => {
@@ -12,6 +12,10 @@ describe("extractBearerToken", () => {
 
   test("returns null when the header is missing", () => {
     expect(extractBearerToken(undefined)).toBeNull();
+  });
+
+  test("returns null for an empty header", () => {
+    expect(extractBearerToken("")).toBeNull();
   });
 
   test("returns null when the Bearer scheme is missing", () => {

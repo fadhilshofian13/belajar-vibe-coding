@@ -45,11 +45,22 @@ bun run start
 
 ## Testing
 
-Tes integrasi memakai database dari `.env`, jadi pastikan PostgreSQL berjalan dan migration sudah dijalankan.
+Semua tes ada di `src/tests/`, satu file tes untuk satu file source:
+
+| File tes                         | Yang dites                                          |
+|----------------------------------|-----------------------------------------------------|
+| `src/tests/health.test.ts`       | `GET /health`                                       |
+| `src/tests/users-routes.test.ts` | `POST /api/v1/users`, `GET /api/v1/users/profile`   |
+| `src/tests/auth-routes.test.ts`  | `POST /api/v1/login`, `DELETE /api/v1/logout`       |
+| `src/tests/bearer-token.test.ts` | helper `extractBearerToken`                         |
+
+Tes API memakai database PostgreSQL dari `.env`, jadi pastikan PostgreSQL berjalan dan migration sudah dijalankan.
 
 ```bash
 bun run test
 ```
+
+Setiap tes membuat user dengan email unik miliknya sendiri, lalu menghapus kembali hanya data tersebut setelah tes selesai. Data lain di database tidak tersentuh.
 
 CI di GitHub Actions menjalankan `bun run typecheck`, migration, dan `bun run test` di setiap Pull Request.
 
